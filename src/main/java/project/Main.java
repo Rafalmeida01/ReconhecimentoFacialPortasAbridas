@@ -1,10 +1,12 @@
 package project;
 
+
 import org.openimaj.feature.FloatFV;
 import org.openimaj.feature.FloatFVComparison;
 import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
+import org.openimaj.image.MBFImage;
 import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
 import org.openimaj.image.processing.face.detection.keypoints.FKEFaceDetector;
 import org.openimaj.image.processing.face.detection.keypoints.KEDetectedFace;
@@ -12,21 +14,57 @@ import org.openimaj.image.processing.face.feature.FacePatchFeature;
 import org.openimaj.image.processing.face.feature.comparison.FaceFVComparator;
 import org.openimaj.image.processing.face.similarity.FaceSimilarityEngine;
 import org.openimaj.math.geometry.shape.Rectangle;
+import org.openimaj.video.capture.VideoCapture;
 
+import org.openimaj.video.capture.VideoCaptureException;
+
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) throws IOException {
-        final URL image1url = new URL("https://jpimg.com.br/uploads/2023/06/yurialberto.png");
-        final URL image2url = new URL("https://centraldotimao.com.br/wp-content/uploads/2022/09/FdyAf-3WYAAwoZb.jpg");
+
+    public class Main {
+        public static void main(String[] args) throws IOException, InterruptedException {
+          JFrame frame = new JFrame("Webcam capture - openIMAJ");
+          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          frame.setSize(500, 500);
+          JLabel label = new JLabel();
+          frame.add(label);
+          frame.setVisible(true);
+
+          try {
+              VideoCapture webCam = new VideoCapture(600, 480);
+              while (true) {
+                  MBFImage frameImage = webCam.getNextFrame();
+                  BufferedImage bufferedImage = ImageUtilities.createBufferedImageForDisplay(frameImage);
+
+                  label.setIcon(new ImageIcon(bufferedImage));
+
+                  Thread.sleep(33);
+              }
+          } catch (VideoCaptureException | InterruptedException e) {
+              e.printStackTrace();
+          }
+
+
+            // Load the native
+
+    final URL image1url = new URL("https://jpimg.com.br/uploads/2023/06/yurialberto.png");
+
+    final URL image2url = new URL("https://centraldotimao.com.br/wp-content/uploads/2022/09/FdyAf-3WYAAwoZb.jpg");
+
 
 
         final FImage image1 = ImageUtilities.readF(image1url);
         final FImage image2 = ImageUtilities.readF(image2url);
+
 
 // then we set up a face detector; will use a haar cascade detector to
 // find faces, followed by a keypoint-enhanced detector to find facial
