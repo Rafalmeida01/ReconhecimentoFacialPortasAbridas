@@ -1,9 +1,9 @@
 package application;
 
-import services.Webcam;
+import services.Frame;
 
 public class Main {
     public static void main(String[] args) {
-        Webcam webcam = new Webcam();
+        Frame frame = new Frame();
     }
 }

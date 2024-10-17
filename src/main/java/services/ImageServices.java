@@ -96,9 +96,9 @@ public class ImageServices {
     }
 
     public static void createGrid() {
-        String path = System.getenv("HOMEPATH") + "\\Desktop\\output";
-        int w = 400;
-        int h = 400;
+        String path = System.getenv("HOMEPATH")+"\\temp\\Reconhecimento-Facial-Java-Fiec\\src\\main\\resources\\imgs";
+        int w = 200;
+        int h = 200;
         int gridSize = 10;
 
         BufferedImage grid = new BufferedImage(w * gridSize, h * gridSize, BufferedImage.TYPE_INT_RGB);
@@ -111,6 +111,12 @@ public class ImageServices {
 
         if (files != null) {
             for (File file : files) {
+
+                // Ignorar o arquivo temp_frame.jpg
+                if (file.getName().equals("temp_frame.jpg")) {
+                    continue;
+                }
+
                 try {
                     BufferedImage img = ImageIO.read(file);
 
@@ -140,49 +146,12 @@ public class ImageServices {
 
         try {
             // Salvar a imagem grid criada
-            File gridImg = new File(System.getenv("HOMEPATH") + "\\Desktop\\gridImage.jpg");
+            File gridImg = new File(System.getProperty("user.dir") + "/gridImage.jpg");
             ImageIO.write(grid, "jpg", gridImg);
             System.out.println("Grid criado com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro ao criar o grid.");
             e.printStackTrace();
-        }
-    }
-
-    public static void resizeInputs() {
-        String inputFolder = System.getenv("HOMEPATH") + "\\Desktop\\imgs";
-        String outputFolder = System.getenv("HOMEPATH") + "\\Desktop\\output";
-
-        int w = 400;
-        int h = 400;
-
-        File folder = new File(inputFolder);
-        File[] files = folder.listFiles();
-
-        if (files != null) {
-            for (File file : files) {
-                try {
-                    BufferedImage img = ImageIO.read(file);
-
-                    BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-                    Graphics2D g = resizedImage.createGraphics();
-                    g.drawImage(img.getScaledInstance(w, h, Image.SCALE_SMOOTH), 0, 0, null);
-                    g.dispose();
-
-                    // Criar o nome do arquivo de saída
-                    String outputFileName = outputFolder + File.separator + file.getName();
-
-                    // Salvar a imagem redimensionada
-                    ImageIO.write(resizedImage, "jpg", new File(outputFileName));
-
-                    System.out.println("Imagem redimensionada: " + file.getName());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            System.out.println("Erro: Pasta não encontrada ou vazia.");
         }
     }
 

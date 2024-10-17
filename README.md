@@ -10,6 +10,6 @@ Este projeto foi desenvolvido para a apresentação no evento **FIEC Portas Aber
   
 ## Funcionalidades
 - **Cadastro de Usuários**: Permite registrar novos usuários no sistema com suas respectivas fotos.
-- **Detecção de Rosto**: Capaz de identificar rostos em imagens capturadas pela webcam.
+- **Detecção de Rosto**: Capaz de identificar rostos em imagens capturadas pela frame.
 - **Reconhecimento Facial**: Compara os rostos detectados com os registros no banco de dados para verificar a identidade dos usuários.
   

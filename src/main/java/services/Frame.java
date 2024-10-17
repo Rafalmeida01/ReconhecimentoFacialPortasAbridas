@@ -12,14 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-public class Webcam {
+public class Frame {
 
     private JLabel label;
     private VideoCapture webCam;
 
-    public Webcam() {
+    public Frame() {
         // Configurar o JFrame
         JFrame frame = new JFrame("Webcam capture - openIMAJ");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,6 +134,7 @@ public class Webcam {
 
             // 3. Comparar o frame capturado com o grid
             String gridFileName = System.getProperty("user.dir") + "/gridImage.jpg"; // Localização do grid criado
+            System.out.println(gridFileName);
             ImageServices.reconhecimento(tempFileName, gridFileName);  // metodo que compar as duas imagens
 
         } catch (Exception e) {
