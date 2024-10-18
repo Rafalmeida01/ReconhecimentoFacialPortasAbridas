@@ -1,5 +1,6 @@
 package services;
 
+import jakarta.persistence.EntityManager;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.capture.VideoCapture;
@@ -18,7 +19,7 @@ public class Frame {
     private JLabel label;
     private VideoCapture webCam;
 
-    public Frame() {
+    public Frame(EntityManager entityManager) {
         // Configurar o JFrame
         JFrame frame = new JFrame("Webcam capture - openIMAJ");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -143,3 +144,4 @@ public class Frame {
     }
 
 }
+
