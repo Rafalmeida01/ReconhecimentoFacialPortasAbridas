@@ -1,10 +1,11 @@
 package services;
 
+import example.Classes.PainelCadastro;
+import example.Classes.Posicao;
 import jakarta.persistence.EntityManager;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.capture.VideoCapture;
-import org.openimaj.video.capture.VideoCaptureException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,9 +27,15 @@ public class Frame {
         frame.setSize(600, 600);
         frame.setLayout(new BorderLayout());
 
+        JPanel panel = new JPanel();
+        panel.setSize(600, 600);
+
+        PainelCadastro painelCadastro = new PainelCadastro();
+        painelCadastro.setEM(entityManager);
+        painelCadastro.init();
         // JLabel para mostrar a imagem da webcam
         label = new JLabel();
-        frame.add(label, BorderLayout.CENTER);
+        panel.add(label, BorderLayout.CENTER);
 
         // Botões para capturar o frame e reconhecer
         JButton captureButton = new JButton("Capturar Frame");
@@ -36,10 +43,13 @@ public class Frame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(captureButton);
         buttonPanel.add(recognizeButton);
-        frame.add(buttonPanel, BorderLayout.SOUTH);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
 
+        //panel.setVisible(true);
+        painelCadastro.setVisible(true);
+        frame.add(painelCadastro);
         frame.setVisible(true);
-
+/*
         // Configurar a webcam
         try {
             webCam = new VideoCapture(600, 480);
@@ -61,7 +71,7 @@ public class Frame {
         } catch (VideoCaptureException e) {
             e.printStackTrace();
         }
-
+*/
         // Ação para capturar o frame e salvá-lo na pasta imgs
         captureButton.addActionListener(new ActionListener() {
             @Override
@@ -77,6 +87,8 @@ public class Frame {
                 recognizeFrame();
             }
         });
+
+        frame.add(panel);
     }
 
     // Metodo para capturar o frame atual e salvar na pasta imgs
@@ -93,7 +105,7 @@ public class Frame {
             g.dispose();
 
             // Caminho da pasta "imgs" no projeto
-            String outputFolder = System.getProperty("user.dir") + "/src/main/resources/imgs";
+            String outputFolder = System.getenv("HOMEPATH") + "/Desktop/imgs";
             File folder = new File(outputFolder);
             if (!folder.exists()) {
                 folder.mkdirs();  // Criar a pasta se ela não existir
@@ -106,6 +118,11 @@ public class Frame {
             // Salvar a imagem
             ImageIO.write(resizedImage, "jpg", outputFile);
             System.out.println("Imagem capturada e salva em: " + outputFile.getAbsolutePath());
+
+            Posicao p = ImageServices.createGrid();
+            System.out.println(p);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,16 +143,17 @@ public class Frame {
             g.dispose();
 
             // Salvar o frame capturado temporariamente
-            String tempFileName = System.getProperty("user.dir") + "/src/main/resources/imgs/temp_frame.jpg";
+            String tempFileName = System.getenv("HOMEPATH") + "/temp/temp_frame.jpg";
             File tempFile = new File(tempFileName);
             ImageIO.write(resizedFrame, "jpg", tempFile);
 
             // 2. Criar o grid com as imagens da pasta imgs
-            ImageServices.createGrid();
+//            ImageServices.createGrid();
 
             // 3. Comparar o frame capturado com o grid
-            String gridFileName = System.getProperty("user.dir") + "/gridImage.jpg"; // Localização do grid criado
-            System.out.println(gridFileName);
+            //String gridFileName = System.getProperty("user.dir") + "/gridImage.jpg"; // Localização do grid criado
+            //System.out.println(gridFileName);
+            String gridFileName = System.getenv("HOMEPATH") + "/Desktop/grids/grid1.jpg";
             ImageServices.reconhecimento(tempFileName, gridFileName);  // metodo que compar as duas imagens
 
         } catch (Exception e) {

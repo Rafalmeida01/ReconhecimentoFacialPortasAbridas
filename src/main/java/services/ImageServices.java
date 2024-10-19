@@ -1,5 +1,6 @@
 package services;
 
+import example.Classes.Posicao;
 import org.openimaj.feature.FloatFV;
 import org.openimaj.feature.FloatFVComparison;
 import org.openimaj.image.DisplayUtilities;
@@ -13,14 +14,12 @@ import org.openimaj.image.processing.face.feature.comparison.FaceFVComparator;
 import org.openimaj.image.processing.face.similarity.FaceSimilarityEngine;
 import org.openimaj.math.geometry.shape.Rectangle;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
-import javax.imageio.ImageIO;
 
 public class ImageServices {
 
@@ -67,36 +66,45 @@ public class ImageServices {
         // faces in the two images. The following loop goes through the map of
         // each face in the first image to all the faces in the second:
         for (final Map.Entry<String, Map<String, Double>> e : engine.getSimilarityDictionary().entrySet()) {
-            // this computes the matching face in the second image with the
-            // smallest distance:
-            double bestScore = Double.MAX_VALUE;
+// this computes the matching face in the second image with the
+// smallest distance:
+            double bestScore = Double.MIN_VALUE;
             String best = null;
             for (final Map.Entry<String, Double> matches : e.getValue().entrySet()) {
-                if (matches.getValue() < bestScore) {
+                System.out.println(matches.getKey() + " " + matches.getValue());
+                if (matches.getValue() < 40) {
                     bestScore = matches.getValue();
                     best = matches.getKey();
                 }
             }
 
-            // and this composites the original two images together, and draws
-            // the matching pair of faces:
-            final FImage img = new FImage(image1.width + image2.width, Math.max(image1.height, image2.height));
-            img.drawImage(image1, 0, 0);
-            img.drawImage(image2, image1.width, 0);
+// and this composites the original two images together, and draws
+// the matching pair of faces:
+            if(best != null) {
+                final FImage img = new FImage(image1.width + image2.width, Math.max(image1.height, image2.height));
+                img.drawImage(image1, 0, 0);
+                img.drawImage(image2, image1.width, 0);
 
-            img.drawShape(engine.getBoundingBoxes().get(e.getKey()), 1F);
+                img.drawShape(engine.getBoundingBoxes().get(e.getKey()), 1F);
 
-            final Rectangle r = engine.getBoundingBoxes().get(best);
-            r.translate(image1.width, 0);
-            img.drawShape(r, 1F);
+                final Rectangle r = engine.getBoundingBoxes().get(best);
+                r.translate(image1.width, 0);
+                img.drawShape(r, 1F);
 
-            // and finally displays the result
-            DisplayUtilities.display(img);
+                //float x1 = r.getTopLeft().getX();
+                //float x2 = r.getBottomRight().getX();
+                //float x = (x1 + x2)/2;
+                float x = r.getTopLeft().getX();
+                float y = r.getTopLeft().getY();
+
+// and finally displays the result
+                DisplayUtilities.display(img);
+            }
         }
     }
 
-    public static void createGrid() {
-        String path = System.getenv("HOMEPATH")+"\\temp\\Reconhecimento-Facial-Java-Fiec\\src\\main\\resources\\imgs";
+    public static Posicao createGrid() {
+        String path = System.getenv("HOMEPATH")+"\\Desktop\\imgs";
         int w = 200;
         int h = 200;
         int gridSize = 10;
@@ -108,14 +116,15 @@ public class ImageServices {
 
         File folder = new File(path);
         File[] files = folder.listFiles();
+        int posicao = files.length;
 
         if (files != null) {
             for (File file : files) {
 
                 // Ignorar o arquivo temp_frame.jpg
-                if (file.getName().equals("temp_frame.jpg")) {
-                    continue;
-                }
+                //if (file.getName().equals("temp_frame.jpg")) {
+                //    continue;
+                //}
 
                 try {
                     BufferedImage img = ImageIO.read(file);
@@ -146,13 +155,18 @@ public class ImageServices {
 
         try {
             // Salvar a imagem grid criada
-            File gridImg = new File(System.getProperty("user.dir") + "/gridImage.jpg");
-            ImageIO.write(grid, "jpg", gridImg);
+            String gridFileName =System.getenv("HOMEPATH") + "/Desktop/grids/grid1.jpg";
+            ImageIO.write(grid, "jpg", new File(gridFileName));
             System.out.println("Grid criado com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro ao criar o grid.");
             e.printStackTrace();
         }
+
+        Posicao p = new Posicao();
+        p.setX(posicao%10);
+        p.setY(posicao/10);
+        return p;
     }
 
 }

@@ -8,7 +8,7 @@ import services.Frame;
 public class Main {
     public static void main(String[] args) {
         // Configuração do EntityManager
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("nome_da_sua_unidade_de_persistencia");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("minhaUnidadeDePersistencia");
         EntityManager entityManager = emf.createEntityManager();
 
         // Criar a instância do Frame
