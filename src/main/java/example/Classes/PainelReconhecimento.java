@@ -93,7 +93,7 @@ public class PainelReconhecimento extends JPanel {
                 List<Pessoa> pessoas =  pessoaRepo.ler();
                 Pessoa pessoaSelecionada =pessoas.stream().filter(pessoa1 -> pessoa1.getX() == p.getX() && pessoa1.getY() == p.getY()).findFirst().orElse(null);
                 if (pessoaSelecionada != null) {
-                    JOptionPane.showMessageDialog(null, "" + pessoaSelecionada.getNome() + " " + pessoaSelecionada.getCursoDeInteresse());
+                    JOptionPane.showMessageDialog(null, "Nome:" + " " + pessoaSelecionada.getNome() + " " + "Data de nascimento:" + " " + pessoaSelecionada.getDataDeNascimento() + " " + "Curso de interesse:" + " " + pessoaSelecionada.getCursoDeInteresse());
                 }
             }
 
