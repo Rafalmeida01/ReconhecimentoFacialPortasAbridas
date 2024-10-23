@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManager;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.capture.VideoCapture;
-import org.openimaj.video.capture.VideoCaptureException;
 import services.ImageServices;
 
 import javax.imageio.ImageIO;
@@ -26,7 +25,7 @@ public class PainelCadastro extends JPanel {
         nomeText = new JTextField();
         dataNascText = new JTextField();
         cursoText = new JTextField();
-        button = new JButton("Cadastrar foto");
+        button = new JButton("Tirar foto");
         cadastra = new JButton("Cadastrar");
 
         nomeLabel.setBounds(50, 50, 100, 30);
@@ -51,15 +50,7 @@ public class PainelCadastro extends JPanel {
         label.setVisible(false);
         button.setVisible(false);
 
-        try {
-            webCam = new VideoCapture(600, 480);
 
-            // Thread para capturar o vídeo da webcam continuamente
-
-
-        } catch (VideoCaptureException e) {
-            e.printStackTrace();
-        }
 
         button.addActionListener(new ActionListener() {
             @Override
@@ -67,6 +58,14 @@ public class PainelCadastro extends JPanel {
                 captureFrame();
                 PessoaRepo pessoaRepo = new PessoaRepo(em);
                 pessoaRepo.criar(pessoa);
+                nomeLabel.setVisible(true);
+                dataNascLabel.setVisible(true);
+                cursoLabel.setVisible(true);
+                nomeText.setVisible(true);
+                dataNascText.setVisible(true);
+                cursoText.setVisible(true);
+                label.setVisible(false);
+                button.setVisible(false);
             }
         });
 
@@ -126,6 +125,9 @@ public class PainelCadastro extends JPanel {
     private EntityManager em;
     public void setEM(EntityManager em) {
         this.em=em;
+    }
+    public void setWebCam(VideoCapture webCam) {
+        this.webCam=webCam;
     }
 
     private void captureFrame() {

@@ -1,11 +1,13 @@
 package services;
 
 import example.Classes.PainelCadastro;
+import example.Classes.PainelReconhecimento;
 import example.Classes.Posicao;
 import jakarta.persistence.EntityManager;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 import org.openimaj.video.capture.VideoCapture;
+import org.openimaj.video.capture.VideoCaptureException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,36 +21,67 @@ public class Frame {
 
     private JLabel label;
     private VideoCapture webCam;
+    private boolean isCadastro = true;
+    private boolean inicou = false;
 
     public Frame(EntityManager entityManager) {
         // Configurar o JFrame
         JFrame frame = new JFrame("Webcam capture - openIMAJ");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 600);
+        frame.setSize(600, 700);
         frame.setLayout(new BorderLayout());
+        JButton button = new JButton("Ir para reconhecimento");
+        button.setBounds(0,600,600,50);
 
-        JPanel panel = new JPanel();
-        panel.setSize(600, 600);
+        frame.setLayout(null);
+
+        try {
+            webCam = new VideoCapture(600, 480);
+
+            // Thread para capturar o vídeo da webcam continuamente
+
+
+        } catch (VideoCaptureException e) {
+            e.printStackTrace();
+        }
 
         PainelCadastro painelCadastro = new PainelCadastro();
+        painelCadastro.setWebCam(webCam);
         painelCadastro.setEM(entityManager);
         painelCadastro.init();
-        // JLabel para mostrar a imagem da webcam
-        label = new JLabel();
-        panel.add(label, BorderLayout.CENTER);
 
-        // Botões para capturar o frame e reconhecer
-        JButton captureButton = new JButton("Capturar Frame");
-        JButton recognizeButton = new JButton("Reconhecer");
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(captureButton);
-        buttonPanel.add(recognizeButton);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        PainelReconhecimento painelReconhecimento = new PainelReconhecimento();
+        painelReconhecimento.setWebCam(webCam);
+        painelReconhecimento.setEM(entityManager);
+        painelReconhecimento.init();
+
 
         //panel.setVisible(true);
         painelCadastro.setVisible(true);
         frame.add(painelCadastro);
+        frame.add(painelReconhecimento);
         frame.setVisible(true);
+        frame.add(button);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isCadastro = !isCadastro;
+                if (!isCadastro) {
+                    painelCadastro.setVisible(false);
+                    painelReconhecimento.setVisible(true);
+                    if (!inicou) {
+                        painelReconhecimento.rodar();
+                    }
+
+                    button.setText("Ir para cadastro");
+                } else {
+                    painelCadastro.setVisible(true);
+                    painelReconhecimento.setVisible(false);
+                    button.setText("Ir para reconhecimento");
+                }
+            }
+        });
 /*
         // Configurar a webcam
         try {
@@ -72,23 +105,6 @@ public class Frame {
             e.printStackTrace();
         }
 */
-        // Ação para capturar o frame e salvá-lo na pasta imgs
-        captureButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                captureFrame();
-            }
-        });
-
-        // Ação para capturar o frame, criar o grid e comparar
-        recognizeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                recognizeFrame();
-            }
-        });
-
-        frame.add(panel);
     }
 
     // Metodo para capturar o frame atual e salvar na pasta imgs

@@ -3,7 +3,6 @@ package services;
 import example.Classes.Posicao;
 import org.openimaj.feature.FloatFV;
 import org.openimaj.feature.FloatFVComparison;
-import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
@@ -23,7 +22,7 @@ import java.util.Map;
 
 public class ImageServices {
 
-    public static void reconhecimento(String url1, String url2) throws IOException {
+    public static Posicao reconhecimento(String url1, String url2) throws IOException {
 
         final File image1url = new File(url1);
         final File image2url = new File(url2);
@@ -72,7 +71,7 @@ public class ImageServices {
             String best = null;
             for (final Map.Entry<String, Double> matches : e.getValue().entrySet()) {
                 System.out.println(matches.getKey() + " " + matches.getValue());
-                if (matches.getValue() < 40) {
+                if (matches.getValue() < 47) {
                     bestScore = matches.getValue();
                     best = matches.getKey();
                 }
@@ -94,13 +93,18 @@ public class ImageServices {
                 //float x1 = r.getTopLeft().getX();
                 //float x2 = r.getBottomRight().getX();
                 //float x = (x1 + x2)/2;
-                float x = r.getTopLeft().getX();
-                float y = r.getTopLeft().getY();
+                System.out.println(r.getTopLeft().getX());
+                float x = (r.getTopLeft().getX()-200) / 200;
+                float y = r.getTopLeft().getY() / 200;
+
+                System.out.println((int)x + " " + (int)y);
 
 // and finally displays the result
-                DisplayUtilities.display(img);
+                //.display(img);
+                return new Posicao((int) x, (int) y);
             }
         }
+        return null;
     }
 
     public static Posicao createGrid() {
@@ -116,7 +120,7 @@ public class ImageServices {
 
         File folder = new File(path);
         File[] files = folder.listFiles();
-        int posicao = files.length;
+        int posicao = files.length - 1;
 
         if (files != null) {
             for (File file : files) {
