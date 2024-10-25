@@ -121,7 +121,7 @@ public class Frame {
             g.dispose();
 
             // Caminho da pasta "imgs" no projeto
-            String outputFolder = "\\\\DESKTOP-VO2TSQR\Users\gabri\\imgs";
+            String outputFolder = "\\\\DESKTOP-VO2TSQR\\Users\\gabri\\imgs";
             File folder = new File(outputFolder);
             if (!folder.exists()) {
                 folder.mkdirs();  // Criar a pasta se ela não existir
@@ -169,7 +169,7 @@ public class Frame {
             // 3. Comparar o frame capturado com o grid
             //String gridFileName = System.getProperty("user.dir") + "/gridImage.jpg"; // Localização do grid criado
             //System.out.println(gridFileName);
-            String gridFileName = "\\\\DESKTOP-VO2TSQR\Users\gabri\\grids";
+            String gridFileName = "\\\\DESKTOP-VO2TSQR\\Users\\gabri\\grids";
             ImageServices.reconhecimento(tempFileName, gridFileName);  // metodo que compar as duas imagens
 
         } catch (Exception e) {
