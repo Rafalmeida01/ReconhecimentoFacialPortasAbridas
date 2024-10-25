@@ -160,7 +160,7 @@ public class PainelCadastro extends JPanel {
             Posicao p = ImageServices.createGrid();
             System.out.println(p);
 
-            pessoa.setX(p.getX());
+            pessoa.setX(p.getX()-1);
             pessoa.setY(p.getY());
 
 
