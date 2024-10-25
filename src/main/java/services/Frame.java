@@ -121,7 +121,7 @@ public class Frame {
             g.dispose();
 
             // Caminho da pasta "imgs" no projeto
-            String outputFolder = System.getenv("HOMEPATH") + "/Desktop/imgs";
+            String outputFolder = "\\\\DESKTOP-VO2TSQR\Users\gabri\\imgs";
             File folder = new File(outputFolder);
             if (!folder.exists()) {
                 folder.mkdirs();  // Criar a pasta se ela não existir
@@ -159,7 +159,7 @@ public class Frame {
             g.dispose();
 
             // Salvar o frame capturado temporariamente
-            String tempFileName = System.getenv("HOMEPATH") + "/temp/temp_frame.jpg";
+            String tempFileName = System.getenv("HOMEPATH") + "/temp_frame.jpg";
             File tempFile = new File(tempFileName);
             ImageIO.write(resizedFrame, "jpg", tempFile);
 
@@ -169,7 +169,7 @@ public class Frame {
             // 3. Comparar o frame capturado com o grid
             //String gridFileName = System.getProperty("user.dir") + "/gridImage.jpg"; // Localização do grid criado
             //System.out.println(gridFileName);
-            String gridFileName = System.getenv("HOMEPATH") + "/Desktop/grids/grid1.jpg";
+            String gridFileName = "\\\\DESKTOP-VO2TSQR\Users\gabri\\grids";
             ImageServices.reconhecimento(tempFileName, gridFileName);  // metodo que compar as duas imagens
 
         } catch (Exception e) {
