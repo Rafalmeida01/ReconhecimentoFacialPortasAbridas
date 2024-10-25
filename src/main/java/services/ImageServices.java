@@ -108,7 +108,7 @@ public class ImageServices {
     }
 
     public static Posicao createGrid() {
-        String path = "\\\\DESKTOP-VO2TSQR\Users\gabri\\imgs";
+        String path = "\\\\DESKTOP-VO2TSQR\\Users\\gabri\\imgs";
         int w = 200;
         int h = 200;
         int gridSize = 10;
@@ -159,7 +159,7 @@ public class ImageServices {
 
         try {
             // Salvar a imagem grid criada
-            String gridFileName ="\\\\DESKTOP-VO2TSQR\Users\gabri\\grids\\grid1.jpg";
+            String gridFileName ="\\\\DESKTOP-VO2TSQR\\Users\\gabri\\grids\\grid1.jpg";
             ImageIO.write(grid, "jpg", new File(gridFileName));
             System.out.println("Grid criado com sucesso!");
         } catch (Exception e) {
