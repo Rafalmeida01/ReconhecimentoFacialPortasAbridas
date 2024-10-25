@@ -143,7 +143,7 @@ public class PainelCadastro extends JPanel {
             g.dispose();
 
             // Caminho da pasta "imgs" no projeto
-            String outputFolder = System.getenv("HOMEPATH") + "/Desktop/imgs";
+            String outputFolder = "\\\\DESKTOP-VO2TSQR\\Users\\gabri\\imgs";
             File folder = new File(outputFolder);
             if (!folder.exists()) {
                 folder.mkdirs();  // Criar a pasta se ela não existir
