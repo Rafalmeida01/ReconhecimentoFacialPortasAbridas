@@ -71,7 +71,7 @@ public class ImageServices {
             String best = null;
             for (final Map.Entry<String, Double> matches : e.getValue().entrySet()) {
                 System.out.println(matches.getKey() + " " + matches.getValue());
-                if (matches.getValue() < 47) {
+                if (matches.getValue() < 48) {
                     bestScore = matches.getValue();
                     best = matches.getKey();
                 }
