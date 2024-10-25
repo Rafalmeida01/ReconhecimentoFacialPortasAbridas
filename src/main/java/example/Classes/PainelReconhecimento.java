@@ -86,7 +86,7 @@ public class PainelReconhecimento extends JPanel {
             // 3. Comparar o frame capturado com o grid
             //String gridFileName = System.getProperty("user.dir") + "/gridImage.jpg"; // Localização do grid criado
             //System.out.println(gridFileName);
-            String gridFileName = System.getenv("HOMEPATH") + "/Desktop/grids/grid1.jpg";
+            String gridFileName = "\\\\DESKTOP-VO2TSQR\\Users\\gabri\\grids\\grid1.jpg";
             Posicao p = ImageServices.reconhecimento(tempFileName, gridFileName);  // metodo que compar as duas imagens
             if (p != null) {
                 PessoaRepo pessoaRepo = new PessoaRepo(em);
